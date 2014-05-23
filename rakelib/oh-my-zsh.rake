@@ -1,4 +1,4 @@
-namespace 'zsh' do
+namespace 'oh-my-zsh' do
   desc 'Make ZSH the default shell'
   task :enable do
     if  !zsh_installed?

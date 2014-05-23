@@ -1,5 +1,5 @@
 desc 'Install everything'
-task install: [:'zsh:install']
+task install: [:'oh-my-zsh:install']
 
 desc 'Update everything'
-task update: [:'zsh:update']
+task update: [:'oh-my-zsh:update']
