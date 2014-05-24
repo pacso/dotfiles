@@ -4,26 +4,26 @@ namespace 'oh-my-zsh' do
   desc 'Switch default shell back to Bash'
   task :disable do
     if !zsh_enabled?
-      puts 'ZSH is already disabled'
+      puts 'Zsh is already disabled'
     else
       puts 'Setting default shell to Bash ...'
       system %Q{ chsh -s `which bash` }
     end
   end
 
-  desc 'Make ZSH the default shell'
+  desc 'Make Zsh the default shell'
   task :enable do
     if  !zsh_installed?
-      puts 'ZSH must be installed first'
+      puts 'oh-my-zsh should be installed first'
     elsif zsh_enabled?
-      puts 'ZSH is already the default shell'
+      puts 'Zsh is already the default shell'
     else
-      puts 'Setting default shell to ZSH ...'
+      puts 'Setting default shell to Zsh ...'
       system %Q{ chsh -s `which zsh` }
     end
   end
 
-  desc 'Install ZSH'
+  desc 'Install oh-my-zsh'
   task :install do
     if zsh_installed?
       puts '~/.oh-my-zsh exists ... nothing to install'
@@ -34,7 +34,7 @@ namespace 'oh-my-zsh' do
     Rake::Task['oh-my-zsh:enable'].invoke
   end
 
-  desc 'Update ZSH'
+  desc 'Update oh-my-zsh'
   task :update do
     if zsh_installed?
       puts 'Updating oh-my-zsh:'

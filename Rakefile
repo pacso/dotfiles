@@ -7,6 +7,7 @@ task update: [:update_self, :'oh-my-zsh:update']
 desc 'Remove everything'
 task uninstall: [:'oh-my-zsh:uninstall']
 
+desc 'Update dotfiles source'
 task :update_self do
   puts 'Updating .dotfiles project:'
   system %Q{ git pull }
