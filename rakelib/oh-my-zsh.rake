@@ -37,6 +37,7 @@ namespace 'oh-my-zsh' do
   desc 'Update ZSH'
   task :update do
     if zsh_installed?
+      puts 'Updating oh-my-zsh:'
       Dir.chdir(zsh_directory) do
         system %Q{ git pull }
       end
