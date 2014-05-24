@@ -1,4 +1,16 @@
+require 'fileutils'
+
 namespace 'oh-my-zsh' do
+  desc 'Switch default shell back to Bash'
+  task :disable do
+    if !zsh_enabled?
+      puts 'ZSH is already disabled'
+    else
+      puts 'Setting default shell to Bash ...'
+      system %Q{ chsh -s `which bash` }
+    end
+  end
+
   desc 'Make ZSH the default shell'
   task :enable do
     if  !zsh_installed?
@@ -19,6 +31,7 @@ namespace 'oh-my-zsh' do
       puts 'Installing ZSH ...'
       system %Q{ git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh" }
     end
+    Rake::Task['oh-my-zsh:enable'].invoke
   end
 
   desc 'Update ZSH'
@@ -30,6 +43,11 @@ namespace 'oh-my-zsh' do
     else
       puts 'ZSH must be installed first'
     end
+  end
+
+  desc 'Completely remove oh-my-zsh'
+  task uninstall: [:disable] do
+    FileUtils.rm_r zsh_directory
   end
 end
 

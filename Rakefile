@@ -3,3 +3,6 @@ task install: [:'oh-my-zsh:install']
 
 desc 'Update everything'
 task update: [:'oh-my-zsh:update']
+
+desc 'Remove everything'
+task uninstall: [:'oh-my-zsh:uninstall']
