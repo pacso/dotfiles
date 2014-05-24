@@ -34,9 +34,15 @@ rake zsh:update
 
 ## Uninstall
 
-To completely remove everything:
+To completely remove everything, first disable and remove everything installed by this project:
 
 ```terminal
 cd ~/.dotfiles
 rake uninstall
+```
+
+Then finally you can remove this project itself:
+
+```terminal
+cd; rm -r ~/.dotfiles
 ```
