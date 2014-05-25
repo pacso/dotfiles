@@ -2,7 +2,7 @@
 
 My first stab at a dotfiles project was a modified clone of [Ryan Bates'](https://github.com/ryanb) excellent [dotfiles project](https://github.com/ryanb/dotfiles). Whilst this one draws heavily from that project, I've completely rewritten the installer/updater script to be a little more useful/maintainable.
 
-I'm running on Mac OS X, but this project will likely work on Linux as well.
+This was written on and designed for Mac OS X.
 
 ## Installation
 
