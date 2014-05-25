@@ -1,3 +1,10 @@
+require File.expand_path('../lib/config/init', __FILE__)
+
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError; end
+
 desc 'Install everything'
 task install: [:'oh-my-zsh:install']
 
@@ -12,3 +19,4 @@ task :update_self do
   puts 'Updating .dotfiles project:'
   system %Q{ git pull }
 end
+
