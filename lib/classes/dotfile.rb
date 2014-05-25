@@ -1,6 +1,4 @@
 class Dotfile
-  SOURCE_BASE_PATH = File.dirname(File.dirname(File.dirname(__FILE__)))
-
   def initialize(filename = '')
     @filename = filename
   end
@@ -9,8 +7,16 @@ class Dotfile
     File.exist? source_path
   end
 
+  def destination_exists?
+    File.exist? destination_path
+  end
+
   private
   def source_path
     File.join SOURCE_BASE_PATH, @filename
+  end
+
+  def destination_path
+    File.join DESTINATION_BASE_PATH, ".#{@filename}"
   end
 end
