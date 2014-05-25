@@ -12,11 +12,4 @@ describe Dotfile do
       expect(d.source_exists?).to be_false
     end
   end
-
-  describe '#source_path' do
-    it 'returns the full path to the given file within the ~/.dotfiles directory' do
-      d = Dotfile.new('path/to/file')
-      expect(d.source_path).to eq File.join(ENV['HOME'], '.dotfiles', 'path', 'to', 'file')
-    end
-  end
 end

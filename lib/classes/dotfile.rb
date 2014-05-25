@@ -9,6 +9,7 @@ class Dotfile
     File.exist? source_path
   end
 
+  private
   def source_path
     File.join SOURCE_BASE_PATH, @filename
   end
