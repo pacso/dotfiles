@@ -29,8 +29,6 @@ class Dotfile
   end
 
   def create_symlink!
-    puts "Creating symlink from #{source_path} to #{target_path}"
     File.symlink(source_path, target_path)
-
   end
 end
