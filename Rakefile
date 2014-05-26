@@ -1,4 +1,4 @@
-require File.expand_path('../lib/config/init', __FILE__)
+require File.join(File.dirname(__FILE__), 'lib', 'config', 'init')
 
 begin
   require 'rspec/core/rake_task'
