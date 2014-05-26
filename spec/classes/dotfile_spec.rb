@@ -80,12 +80,41 @@ describe Dotfile do
   describe '#create_symlink' do
     it 'creates a symlink in the target location to the source file' do
       d = Dotfile.new('new_file')
-      expect { d.create_symlink! }.to change { d.target_identical? }.from(false).to(true)
+      expect { d.create_symlink }.to change { d.target_identical? }.from(false).to(true)
     end
 
     it 'raises exception if destination file already exists' do
       d = Dotfile.new('existing_symlink')
-      expect { d.create_symlink! }.to raise_exception
+      expect { d.create_symlink }.to raise_exception
+    end
+  end
+
+  describe '#remove_existing_target' do
+    it 'deletes the file occupying the target path' do
+      d = Dotfile.new('existing_file')
+      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+    end
+
+    it 'deletes the directory occupying the target path' do
+      d = Dotfile.new('existing_directory')
+      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+    end
+
+    it 'deletes the link occupying the target path' do
+      d = Dotfile.new('existing_symlink')
+      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+    end
+
+    it 'force deletes files without write permission?' do
+      pending 'need to decide if this is required' do
+        d = Dotfile.new('existing_file_without_write_permissions')
+        expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+      end
+    end
+
+    it 'raises exception if destination file does not exist' do
+      d = Dotfile.new('new_file')
+      expect { d.remove_existing_target }.to raise_exception
     end
   end
 end

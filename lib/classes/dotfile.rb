@@ -13,7 +13,7 @@ class Dotfile
   end
 
   def target_identical?
-    File.identical?(target_path, source_path)
+    File.identical? target_path, source_path
   end
 
   def source_path
@@ -28,7 +28,20 @@ class Dotfile
     '.' + @filename.sub(/\.erb$/, '')
   end
 
-  def create_symlink!
-    File.symlink(source_path, target_path)
+  def create_symlink
+    File.symlink source_path, target_path
+  end
+
+  def remove_existing_target
+    case File.ftype(target_path)
+      when 'file'
+        File.delete target_path
+      when 'directory'
+        FileUtils.rm_r target_path
+      when 'link'
+        File.unlink target_path
+      else
+        raise NotImplementedError, "Cannot remove file of type '#{File.ftype(target_path)}'"
+    end
   end
 end
