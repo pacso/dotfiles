@@ -31,6 +31,6 @@ class Dotfile
   def create_symlink!
     puts "Creating symlink from #{source_path} to #{target_path}"
     File.symlink(source_path, target_path)
-    puts "Target listing: #{Dir[target_path]}"
+    puts "Target listing: #{Dir[TARGET_BASE_PATH + '/*']}"
   end
 end
