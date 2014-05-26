@@ -80,8 +80,7 @@ describe Dotfile do
   describe '#create_symlink' do
     it 'creates a symlink in the target location to the source file' do
       d = Dotfile.new('new_file')
-      d.create_symlink!
-      expect(d.target_identical?).to be_true
+      expect { d.create_symlink! }.to change { d.target_identical? }.from(false).to(true)
     end
 
     it 'raises exception if destination file already exists' do
