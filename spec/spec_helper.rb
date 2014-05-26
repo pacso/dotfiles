@@ -16,9 +16,13 @@ RSpec.configure do |config|
     Dir.mkdir SPEC_TMP_DIR
     FileUtils.cp_r(FIXTURE_SOURCE_PATH, SOURCE_BASE_PATH)
     FileUtils.cp_r(FIXTURE_TARGET_PATH, TARGET_BASE_PATH)
+    puts "Target dir before test:"
+    puts Dir.entries TARGET_BASE_PATH
   end
 
   config.after(:each) do
+    puts "Target dir after test:"
+    puts Dir.entries TARGET_BASE_PATH
     FileUtils.rm_r SPEC_TMP_DIR
   end
 end
