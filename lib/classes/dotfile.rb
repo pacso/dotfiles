@@ -8,16 +8,19 @@ class Dotfile
     @filename != '' && File.exist?(source_path)
   end
 
-  def destination_exists?
-    @filename != '' && File.exist?(destination_path)
+  def target_exists?
+    @filename != '' && File.exist?(target_path)
   end
 
-  private
   def source_path
     File.join SOURCE_BASE_PATH, @filename
   end
 
-  def destination_path
-    File.join DESTINATION_BASE_PATH, ".#{@filename}"
+  def target_path
+    File.join TARGET_BASE_PATH, target_filename
+  end
+
+  def target_filename
+    '.' + @filename.sub(/\.erb$/, '')
   end
 end
