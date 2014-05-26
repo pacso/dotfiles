@@ -4,11 +4,11 @@ class Dotfile
   end
 
   def source_exists?
-    File.exist? source_path
+    @filename != '' && File.exist?(source_path)
   end
 
   def destination_exists?
-    File.exist? destination_path
+    @filename != '' && File.exist?(destination_path)
   end
 
   private
