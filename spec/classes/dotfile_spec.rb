@@ -80,10 +80,13 @@ describe Dotfile do
   describe '#create_symlink' do
     it 'creates a symlink in the target location to the source file' do
       d = Dotfile.new('new_file')
-      expect(d.target_exists?).to be_false
       d.create_symlink!
-      expect(d.target_exists?).to be_true
       expect(d.target_identical?).to be_true
+    end
+
+    it 'raises exception if destination file already exists' do
+      d = Dotfile.new('existing_symlink')
+      expect { d.create_symlink! }.to raise_exception
     end
   end
 end
