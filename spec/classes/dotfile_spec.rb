@@ -10,7 +10,7 @@ describe Dotfile do
       expect { Dotfile.new '' }.to raise_exception ArgumentError
     end
 
-    it 'raises ArgumentError if filename contains whitespace' do
+    it 'raises ArgumentError if filename contains only whitespace' do
       expect { Dotfile.new ' ' }.to raise_exception ArgumentError
     end
   end
@@ -53,7 +53,7 @@ describe Dotfile do
     end
   end
 
-  describe '#destination_exists?' do
+  describe '#target_exists?' do
     it 'returns true when file exists' do
       d = Dotfile.new('existing_file')
       expect(d.target_exists?).to be_true
@@ -62,6 +62,28 @@ describe Dotfile do
     it 'returns false when missing' do
       d = Dotfile.new('non-existent_filename')
       expect(d.target_exists?).to be_false
+    end
+  end
+
+  describe '#target_identical?' do
+    it 'returns true when target links to source' do
+      d = Dotfile.new('existing_symlink')
+      expect(d.target_identical?).to be_true
+    end
+
+    it 'returns false if files are equal but not linked' do
+      d = Dotfile.new('existing_file')
+      expect(d.target_identical?).to be_false
+    end
+  end
+
+  describe '#create_symlink' do
+    it 'creates a symlink in the target location to the source file' do
+      d = Dotfile.new('new_file')
+      expect(d.target_exists?).to be_false
+      d.create_symlink!
+      expect(d.target_exists?).to be_true
+      expect(d.target_identical?).to be_true
     end
   end
 end
