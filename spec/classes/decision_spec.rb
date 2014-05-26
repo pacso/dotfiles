@@ -10,7 +10,7 @@ describe Decision do
     decision.question = question
   end
 
-  describe '#ask' do
+  describe '#ask!' do
     it 'outputs the question' do
       output.should_receive(:puts).with(question)
       decision.ask!
@@ -21,7 +21,7 @@ describe Decision do
       decision.ask!
     end
 
-    it 'repeats the answer to the user' do
+    it 'strips the carriage return and repeats the answer to the user' do
       input.stub(:gets) { "bananas!\r\n" }
       output.should_receive(:puts).with('What?')
       output.should_receive(:puts).with('The answer was: bananas!')
