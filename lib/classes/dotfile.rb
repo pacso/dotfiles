@@ -1,7 +1,7 @@
 class Dotfile
   def initialize(filename)
     @filename = filename.strip
-    raise ArgumentError, 'Filename must not be blank' if @filename == ''
+    raise ArgumentError, 'Filename must not be blank' if @filename.empty?
   end
 
   def source_exists?
