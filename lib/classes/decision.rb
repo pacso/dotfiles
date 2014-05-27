@@ -2,6 +2,7 @@ class Decision
   def initialize(input = STDIN, output = STDOUT)
     @input = input
     @output = output
+    @all_positive = false
   end
 
   def ask(question)
@@ -18,17 +19,20 @@ class Decision
   end
 
   def get_response
-    output_question
-    @response = @input.gets.chomp.downcase
-    get_response unless allowed_responses.include? @response
+    unless @all_positive
+      output_question
+      @response = @input.gets.chomp.downcase
+      get_response unless allowed_responses.include? @response
+    end
   end
 
   def parse_response
     exit if @response == 'q'
-    @response == 'y'
+    @all_positive = true if @response == 'a'
+    @all_positive || @response == 'y'
   end
 
   def allowed_responses
-    %w{y n q}
+    %w{y n a q}
   end
 end

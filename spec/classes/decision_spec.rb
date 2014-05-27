@@ -15,17 +15,16 @@ describe Decision do
 
       it 'outputs the question' do
         output.should_receive(:print).with(question_output)
-        decision.ask(question)
+        decision.ask question
       end
 
       it 'prompts for the answer' do
         input.should_receive(:gets)
-        decision.ask(question)
+        decision.ask question
       end
 
       it 'returns true if response is y' do
-        output.should_receive(:print).with(question_output)
-        expect(decision.ask(question)).to be_true
+        expect(decision.ask question).to be_true
       end
     end
 
@@ -33,8 +32,18 @@ describe Decision do
       let(:response) { "n\r\n" }
 
       it 'returns false if response is n' do
-        output.should_receive(:print).with(question_output)
-        expect(decision.ask(question)).to be_false
+        expect(decision.ask question).to be_false
+      end
+    end
+
+    context 'positive response for all' do
+      let(:response) { "a\r\n" }
+
+      it 'should automatically return true for subsequent questions' do
+        output.should_receive(:print).once
+        expect(decision.ask question).to be_true
+        expect(decision.ask 'Another question?').to be_true
+        expect(decision.ask 'A third question?').to be_true
       end
     end
 
@@ -45,7 +54,7 @@ describe Decision do
 
       it 'repeats the question until a valid response is provided' do
         output.should_receive(:print).exactly(3).times.with(question_output)
-        decision.ask(question)
+        decision.ask question
       end
     end
 
@@ -53,8 +62,7 @@ describe Decision do
       let(:response) { "q\r\n" }
 
       it 'terminates execution' do
-        output.should_receive(:print).with(question_output)
-        expect { decision.ask(question) }.to raise_exception SystemExit
+        expect { decision.ask question }.to raise_exception SystemExit
       end
     end
   end
