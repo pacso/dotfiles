@@ -1,4 +1,6 @@
 class Dotfile
+  include Decideable
+
   def initialize(filename)
     @filename = filename.strip
     raise ArgumentError, 'Filename must not be blank' if @filename.empty?

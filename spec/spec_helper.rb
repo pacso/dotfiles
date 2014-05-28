@@ -8,6 +8,7 @@ SOURCE_BASE_PATH    = File.join(File.dirname(__FILE__), 'tmp', 'sources')
 TARGET_BASE_PATH    = File.join(File.dirname(__FILE__), 'tmp', 'target')
 
 require File.join(File.dirname(File.dirname(__FILE__)), 'lib', 'config', 'init')
+Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
   config.order = 'random'

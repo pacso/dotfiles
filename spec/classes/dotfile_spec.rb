@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Dotfile do
+  it_should_behave_like 'a decideable object' do
+    let(:decideable) { Dotfile.new 'filename' }
+  end
+
   describe '#new' do
     it 'raises ArgumentError if filename not given' do
       expect { Dotfile.new }.to raise_exception ArgumentError
