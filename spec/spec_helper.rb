@@ -14,6 +14,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:each) do
+    $stdout.stub(:print)
     Dir.mkdir SPEC_TMP_DIR
     FileUtils.copy_entry FIXTURE_SOURCE_PATH, SOURCE_BASE_PATH
     FileUtils.copy_entry FIXTURE_TARGET_PATH, TARGET_BASE_PATH

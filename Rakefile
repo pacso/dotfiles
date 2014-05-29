@@ -6,8 +6,6 @@ begin
   task default: [:spec]
 rescue LoadError; end
 
-decision = Decision.new
-
 desc 'Install everything'
 task install: [:'oh-my-zsh:install']
 

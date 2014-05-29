@@ -51,7 +51,7 @@ shared_examples_for 'a decideable object' do
         expect(subject.ask 'Another question?').to be_true
         expect(subject.ask 'A third question?').to be_true
       end
-    end
+   end
 
     context 'invalid responses' do
       before(:each) do
