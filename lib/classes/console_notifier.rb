@@ -1,6 +1,8 @@
-class Notifier
+class ConsoleNotifier
+  MAX_WIDTH = 80
+
   def self.banner(text)
-    n = Notifier.new
+    n = ConsoleNotifier.new
     n.banner(text)
   end
 

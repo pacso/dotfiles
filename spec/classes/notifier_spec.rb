@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe Notifier do
+describe ConsoleNotifier do
   let(:banner_input)              { 'This is the banner text' }
   let(:banner_output)             { '# This is the banner text                                  #' }
   let(:long_banner_input)         { 'This text is extremely long and must be wrapped so that it does not explode out of the side' }
   let(:long_banner_output_line_1) { '# This text is extremely long and must be wrapped so that  #' }
   let(:long_banner_output_line_2) { '# it does not explode out of the side                      #' }
 
-  subject { Notifier.new }
+  subject { ConsoleNotifier.new }
 
   describe '#banner' do
     it 'should wrap the banner text in hashes' do

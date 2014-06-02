@@ -7,7 +7,7 @@ class Rvm
   end
 
   def install
-    Notifier.banner 'Installing RVM'
+    ConsoleNotifier.banner 'Installing RVM'
     system RVM_INSTALL_COMMAND
   end
 end
