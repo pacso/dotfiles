@@ -1,14 +1,10 @@
 namespace 'homebrew' do
+  desc 'Install Homebrew'
   task :install do
-    if File.exist?('/usr/local/bin/brew')
-      puts 'Homebrew appears to already be installed. Skipping ...'
-    else
-      puts 'Installing Homebrew'
-      system %q{ ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" }
-    end
+    Homebrew.install
   end
 
   task :doctor do
-    system %q{ brew doctor }
+    Homebrew.doctor
   end
 end

@@ -7,11 +7,11 @@ class ConsoleNotifier
   end
 
   def banner(text, width = 60)
-    $stdout.puts '#' * width
+    $stdout.puts "\n" + '#' * width
     banner_lines(text, width).each do |line|
       $stdout.puts hash_wrap line, width
     end
-    $stdout.puts '#' * width
+    $stdout.puts '#' * width + "\n\n"
   end
 
   private
