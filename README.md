@@ -1,4 +1,4 @@
-# Jon Pascoe's DotFiles [![Build Status](https://travis-ci.org/pacso/dotfiles.svg?branch=master)](https://travis-ci.org/pacso/dotfiles)
+# Jon Pascoe's DotFiles [![Build Status](https://travis-ci.org/pacso/dotfiles.svg?branch=master)](https://travis-ci.org/pacso/dotfiles) [![GitHub version](https://badge.fury.io/gh/pacso%2Fdotfiles.svg)](http://badge.fury.io/gh/pacso%2Fdotfiles)
 
 My first stab at this was a modified clone of [Ryan Bates'](https://github.com/ryanb) excellent [dotfiles project](https://github.com/ryanb/dotfiles). Whilst this one draws heavily from that project, I've completely rewritten the installer/updater script to be a little more useful/maintainable.
 
