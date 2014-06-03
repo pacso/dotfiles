@@ -1,6 +1,8 @@
 class OhMyZsh
   GITHUB_CLONE_COMMAND = %Q{git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"}
   ENABLE_ZSH_COMMAND = %Q{chsh -s `which zsh`}
+  DISABLE_ZSH_COMMAND = %Q{chsh -s `which bash`}
+  GITHUB_PULL_COMMAND = %Q{git pull}
 
   def self.install
     new.install
@@ -8,6 +10,14 @@ class OhMyZsh
 
   def self.enable
     new.enable
+  end
+
+  def self.disable
+    new.disable
+  end
+
+  def self.update
+    new.update
   end
 
   def install
@@ -30,6 +40,28 @@ class OhMyZsh
     else
       ConsoleNotifier.banner 'Cannot enable OhMyZsh ... install it first'
     end
+  end
+
+  def disable
+    if zsh_enabled?
+      ConsoleNotifier.banner 'Setting default shell to Bash ...'
+      system DISABLE_ZSH_COMMAND
+    else
+      ConsoleNotifier.banner 'Zsh is already disabled'
+    end
+  end
+
+  def update
+    if already_installed?
+      ConsoleNotifier.banner 'Updating oh-my-zsh'
+      Dir.chdir(install_directory) { system GITHUB_PULL_COMMAND }
+    else
+      ConsoleNotifier.banner 'OhMyZsh must be installed first'
+    end
+  end
+
+  def uninstall
+    FileUtils.rm_r install_directory
   end
 
   private
