@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe OhMyZsh do
-  subject { OhMyZsh.new }
-
   before(:each) {
     File.stub(:exist?) { oh_my_zsh_installed? }
     OhMyZsh.any_instance.stub(:zsh_enabled?) { zsh_enabled? }
+    Dir.stub(:chdir).and_yield
   }
 
+  let(:ohMyZsh) { OhMyZsh.new }
   let(:oh_my_zsh_installed?) { false }
   let(:zsh_enabled?) { false }
 
@@ -43,36 +43,36 @@ describe OhMyZsh do
     describe '#install' do
       it 'outputs an installation banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Installing oh-my-zsh'
-        subject.install
+        ohMyZsh.install
       end
 
       it 'calls the github clone system command' do
         expect_any_instance_of(Object).to receive(:system).once.with(%q{git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"})
-        subject.install
+        ohMyZsh.install
       end
     end
 
     describe '#enable' do
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Cannot enable OhMyZsh ... install it first'
-        subject.enable
+        ohMyZsh.enable
       end
 
       it 'does not call a system command' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.enable
+        ohMyZsh.enable
       end
     end
 
     describe '#update' do
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'OhMyZsh must be installed first'
-        subject.update
+        ohMyZsh.update
       end
 
       it 'does not call a system command' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.update
+        ohMyZsh.update
       end
     end
   end
@@ -83,53 +83,53 @@ describe OhMyZsh do
     describe '#install' do
       it 'outputs an already installed banner' do
         expect(ConsoleNotifier).to receive(:banner).with '~/.oh-my-zsh exists ... nothing to install'
-        subject.install
+        ohMyZsh.install
       end
 
       it 'does not call a system command' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.install
+        ohMyZsh.install
       end
     end
 
     describe '#enable' do
       it 'outputs an enabling banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Setting default shell to Zsh ...'
-        subject.enable
+        ohMyZsh.enable
       end
 
       it 'calls the system command to enable zsh' do
         expect_any_instance_of(Object).to receive(:system).once.with(%Q{chsh -s `which zsh`})
-        subject.enable
+        ohMyZsh.enable
       end
     end
 
     describe '#disable' do
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Zsh is already disabled'
-        subject.disable
+        ohMyZsh.disable
       end
 
       it 'does not call a system command' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.disable
+        ohMyZsh.disable
       end
     end
 
     describe '#update' do
       it 'outputs a notification banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Updating oh-my-zsh'
-        subject.update
+        ohMyZsh.update
       end
 
       it 'switches working directory' do
         expect(Dir).to receive(:chdir).once.with("#{ENV['HOME']}/.oh-my-zsh")
-        subject.update
+        ohMyZsh.update
       end
 
       it 'calls the update system command' do
         expect_any_instance_of(Object).to receive(:system).once.with('git pull')
-        subject.update
+        ohMyZsh.update
       end
     end
 
@@ -139,24 +139,24 @@ describe OhMyZsh do
       describe '#enable' do
         it 'outputs a warning banner' do
           expect(ConsoleNotifier).to receive(:banner).with 'Zsh is already the default shell'
-          subject.enable
+          ohMyZsh.enable
         end
 
         it 'does not call a system command' do
           expect_any_instance_of(Object).not_to receive(:system)
-          subject.enable
+          ohMyZsh.enable
         end
       end
 
       describe '#disable' do
         it 'outputs a banner' do
           expect(ConsoleNotifier).to receive(:banner).with 'Setting default shell to Bash ...'
-          subject.disable
+          ohMyZsh.disable
         end
 
         it 'calls a system command to switch default shells' do
           expect_any_instance_of(Object).to receive(:system).once.with(%Q{chsh -s `which bash`})
-          subject.disable
+          ohMyZsh.disable
         end
       end
     end
