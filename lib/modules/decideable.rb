@@ -34,7 +34,10 @@ module Decideable
     end
 
     def parse_response
-      exit if @response == 'q'
+      if @response == 'q'
+        ConsoleNotifier.banner 'Terminating Execution'
+        exit
+      end
       @all_positive = true if @response == 'a'
       @all_positive || @response == 'y'
     end

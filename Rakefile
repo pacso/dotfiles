@@ -9,24 +9,32 @@ rescue LoadError; end
 desc 'Install everything'
 task install: [:'oh-my-zsh:install']
 
-desc 'Update everything'
-task update: [:update_self, :'oh-my-zsh:update']
+namespace :install do
+  desc 'Install oh-my-zsh'
+  task 'oh-my-zsh' => [:'oh-my-zsh:install']
+
+  desc 'Install Rvm'
+  task rvm: [:'rvm:install']
+
+  desc 'Install Homebew'
+  task homebrew: [:'homebrew:install']
+end
 
 desc 'Remove everything'
 task uninstall: [:'oh-my-zsh:uninstall']
 
-desc 'Ask'
-task :ask do
-  if decision.ask('Output bananas?')
-    puts 'B-A-N-A-N-A-S!'
-  else
-    puts 'boring!'
+desc 'Update everything'
+task update: [:'update:self', :'oh-my-zsh:update']
+
+namespace :update do
+  desc 'Update dotfiles source'
+  task :self do
+    ConsoleNotifier.banner 'Updating .dotfiles project:'
+    system %q{git pull}
   end
+
+  desc 'Update oh-my-zsh'
+  task 'oh-my-zsh' => [:'oh-my-zsh:update']
 end
 
-desc 'Update dotfiles source'
-task :update_self do
-  puts 'Updating .dotfiles project:'
-  system %Q{ git pull }
-end
 

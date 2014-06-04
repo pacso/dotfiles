@@ -1,12 +1,15 @@
 require 'spec_helper'
 
 describe Homebrew do
-  subject { Homebrew.new }
-
   before(:each) {
     File.stub(:exist?) { homebrew_installed? }
   }
 
+  it_should_behave_like 'a decideable object' do
+    let(:decideable) { Homebrew.new }
+  end
+
+  let(:homebrew) { Homebrew.new }
   let(:homebrew_installed?) { false }
 
   describe '.install' do
@@ -23,58 +26,62 @@ describe Homebrew do
     end
   end
 
-  context 'without homebrew already installed' do
+  context 'not installed' do
+    before(:each) { Homebrew.any_instance.stub(:ask) { true } }
+
     describe '#install' do
       it 'outputs an installation banner' do
+        expect(ConsoleNotifier).to receive(:banner).with 'To continue you must install Homebrew'
         expect(ConsoleNotifier).to receive(:banner).with 'Installing Homebrew'
-        subject.run_installer
+        homebrew.run_installer
       end
 
       it 'calls the installer' do
         expect_any_instance_of(Object).to receive(:system).once.with(%q{ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"})
-        subject.run_installer
+        homebrew.run_installer
       end
     end
 
     describe '#doctor' do
       it 'does not call the system doctor command' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.run_doctor
+        homebrew.run_doctor
       end
     end
 
-    describe '#already_installed?' do
-      it 'returns false' do
-        expect(subject.already_installed?).to be_false
+    describe '#not_installed?' do
+      it 'returns true' do
+        expect(homebrew.not_installed?).to be_true
       end
     end
   end
 
   context 'with homebrew already installed' do
     let(:homebrew_installed?) { true }
+    before(:each) { Homebrew.any_instance.stub(:ask) { true } }
 
     describe '#install' do
-      it 'outputs a banner skipping installation' do
-        expect(ConsoleNotifier).to receive(:banner).with 'Homebrew appears to already be installed. Skipping ...'
-        subject.run_installer
+      it 'does not output a banner' do
+        expect(ConsoleNotifier).not_to receive(:banner)
+        homebrew.run_installer
       end
 
       it 'does not call the installer' do
         expect_any_instance_of(Object).not_to receive(:system)
-        subject.run_installer
+        homebrew.run_installer
       end
     end
 
     describe '#doctor' do
       it 'calls the system doctor command' do
         expect_any_instance_of(Object).to receive(:system).once.with('brew doctor')
-        subject.run_doctor
+        homebrew.run_doctor
       end
     end
 
-    describe '#already_installed?' do
-      it 'returns true' do
-        expect(subject.already_installed?).to be_true
+    describe '#not_installed?' do
+      it 'returns false' do
+        expect(homebrew.not_installed?).to be_false
       end
     end
   end
