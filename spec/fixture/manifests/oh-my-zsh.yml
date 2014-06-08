@@ -1,0 +1,4 @@
+--- # OhMyZsh Install Manifest
+link:
+  - basedir/subdir/linkdir
+  - basedir/subdir/linkfile

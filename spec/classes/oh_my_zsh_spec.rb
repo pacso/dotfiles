@@ -39,6 +39,31 @@ describe OhMyZsh do
     end
   end
 
+  describe '#link_files' do
+    it 'creates parent directories and then links those files listed in the manifest' do
+      o = OhMyZsh.new
+      o.link_files
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir'))).to be_true
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir'))).to be_true
+
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be_true
+      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be_true
+
+      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be_true
+      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be_true
+
+      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir', 'file'))).to be_true
+    end
+  end
+
+  describe '#manifest' do
+    it 'returns a parsed hash of the oh-my-zsh.yml manifest' do
+      o = OhMyZsh.new
+      response = { 'link' => %w(basedir/subdir/linkdir basedir/subdir/linkfile)}
+      expect(o.manifest).to eq response
+    end
+  end
+
   context 'not installed' do
     describe '#install' do
       it 'outputs an installation banner' do

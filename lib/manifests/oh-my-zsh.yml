@@ -1,0 +1,4 @@
+--- # OhMyZsh Install Manifest
+link:
+  - oh-my-zsh/custom/plugins/pacso
+  - oh-my-zsh/custom/pacso.zsh-theme
