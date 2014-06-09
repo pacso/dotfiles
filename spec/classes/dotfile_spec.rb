@@ -2,123 +2,94 @@ require 'spec_helper'
 
 describe Dotfile do
   it_should_behave_like 'a decideable object' do
-    let(:decideable) { Dotfile.new 'filename' }
+    let(:decideable) { Dotfile.new }
   end
 
-  describe '#new' do
-    it 'raises ArgumentError if filename not given' do
-      expect { Dotfile.new }.to raise_exception ArgumentError
-    end
-
-    it 'raises ArgumentError if filename is empty' do
-      expect { Dotfile.new '' }.to raise_exception ArgumentError
-    end
-
-    it 'raises ArgumentError if filename contains only whitespace' do
-      expect { Dotfile.new ' ' }.to raise_exception ArgumentError
-    end
-  end
+  let(:dotfile) { Dotfile.new }
 
   describe '#source_path' do
     it 'should append filename to the source base path' do
-      d = Dotfile.new('filename')
-      expect(d.source_path).to eq "#{SOURCE_BASE_PATH}/filename"
+      expect(dotfile.source_path('filename')).to eq "#{SOURCE_BASE_PATH}/filename"
     end
   end
 
   describe '#target_path' do
     it 'should append target filename to the target base path' do
-      d = Dotfile.new('filename')
-      expect(d.target_path).to eq "#{TARGET_BASE_PATH}/.filename"
+      expect(dotfile.target_path('filename')).to eq "#{TARGET_BASE_PATH}/.filename"
     end
   end
 
   describe '#target_filename' do
     it 'should prefix the filename with a dot' do
-      d = Dotfile.new('filename')
-      expect(d.target_filename).to eq '.filename'
+      expect(dotfile.target_filename('filename')).to eq '.filename'
     end
 
     it 'should strip .erb from source filename if present' do
-      d = Dotfile.new('filename.erb')
-      expect(d.target_filename).to eq '.filename'
+      expect(dotfile.target_filename('filename.erb')).to eq '.filename'
     end
   end
 
-  describe '#source_exists?' do
+  describe '#source_exists?(filename)' do
     it 'returns true when file exists' do
-      d = Dotfile.new('new_file')
-      expect(d.source_exists?).to be_true
+      expect(dotfile.source_exists?('new_file')).to be_true
     end
 
     it 'returns false when file missing' do
-      d = Dotfile.new('missing')
-      expect(d.source_exists?).to be_false
+      expect(dotfile.source_exists?('missing')).to be_false
     end
   end
 
   describe '#target_exists?' do
     it 'returns true when file exists' do
-      d = Dotfile.new('existing_file')
-      expect(d.target_exists?).to be_true
+      expect(dotfile.target_exists?('existing_file')).to be_true
     end
 
     it 'returns false when missing' do
-      d = Dotfile.new('non-existent_filename')
-      expect(d.target_exists?).to be_false
+      expect(dotfile.target_exists?('non-existent_filename')).to be_false
     end
   end
 
   describe '#target_identical?' do
     it 'returns true when target links to source' do
-      d = Dotfile.new('existing_symlink')
-      expect(d.target_identical?).to be_true
+      expect(dotfile.target_identical?('existing_symlink')).to be_true
     end
 
     it 'returns false if files are equal but not linked' do
-      d = Dotfile.new('existing_file')
-      expect(d.target_identical?).to be_false
+      expect(dotfile.target_identical?('existing_file')).to be_false
     end
   end
 
   describe '#create_symlink' do
     it 'creates a symlink in the target location to the source file' do
-      d = Dotfile.new('new_file')
-      expect { d.create_symlink }.to change { d.target_identical? }.from(false).to(true)
+      expect { dotfile.create_symlink('new_file') }.to change { dotfile.target_identical?('new_file') }.from(false).to(true)
     end
 
     it 'raises exception if destination file already exists' do
-      d = Dotfile.new('existing_symlink')
-      expect { d.create_symlink }.to raise_exception
+      expect { dotfile.create_symlink('existing_symlink') }.to raise_exception
     end
   end
 
   describe '#remove_existing_target' do
     it 'deletes the file occupying the target path' do
-      d = Dotfile.new('existing_file')
-      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+      expect { dotfile.remove_existing_target('existing_file') }.to change { dotfile.target_exists?('existing_file') }.from(true).to(false)
     end
 
     it 'deletes the directory occupying the target path' do
-      d = Dotfile.new('existing_directory')
-      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+      expect { dotfile.remove_existing_target('existing_directory') }.to change { dotfile.target_exists?('existing_directory') }.from(true).to(false)
     end
 
     it 'deletes the link occupying the target path' do
-      d = Dotfile.new('existing_symlink')
-      expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+      expect { dotfile.remove_existing_target('existing_symlink') }.to change { dotfile.target_exists?('existing_symlink') }.from(true).to(false)
     end
 
     it 'force deletes files without write permission?' do
       pending 'need to decide if this is required' do
-        d = Dotfile.new('existing_file_without_write_permissions')
-        expect { d.remove_existing_target }.to change { d.target_exists? }.from(true).to(false)
+        expect { dotfile.remove_existing_target('existing_file_without_write_permissions') }.to change { dotfile.target_exists?('existing_file_without_write_permissions') }.from(true).to(false)
       end
     end
 
     it 'raises exception if destination file does not exist' do
-      d = Dotfile.new('new_file')
-      expect { d.remove_existing_target }.to raise_exception
+      expect { dotfile.remove_existing_target('new_file') }.to raise_exception
     end
   end
 end

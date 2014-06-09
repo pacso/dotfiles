@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'yaml'
 
 SOURCE_BASE_PATH  ||= File.join(File.dirname(File.dirname(File.dirname(__FILE__))), 'sources')
 TARGET_BASE_PATH  ||= ENV['HOME']

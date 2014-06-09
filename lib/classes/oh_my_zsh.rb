@@ -1,6 +1,4 @@
-require 'yaml'
-
-class OhMyZsh
+class OhMyZsh < Dotfile
   GITHUB_CLONE_COMMAND = %Q{git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"}
   ENABLE_ZSH_COMMAND = %Q{chsh -s `which zsh`}
   DISABLE_ZSH_COMMAND = %Q{chsh -s `which bash`}
@@ -28,49 +26,8 @@ class OhMyZsh
     else
       ConsoleNotifier.banner 'Installing oh-my-zsh'
       system GITHUB_CLONE_COMMAND
-      install_files
+      process_manifest
     end
-  end
-
-  def install_files
-    link_files
-  end
-
-  def link_files
-    files_to_link.each do |f|
-      create_parent_directories_if_missing(target_filename f)
-      File.symlink(source_filename(f), target_filename(f))
-    end
-  end
-
-  def create_parent_directories_if_missing(filename)
-    if filename =~ /\//
-      FileUtils.mkdir_p File.dirname(filename)
-    end
-  end
-
-  def source_filename(filename)
-    File.join(SOURCE_BASE_PATH, filename)
-  end
-
-  def target_filename(filename)
-    File.join(TARGET_BASE_PATH, ".#{filename}")
-  end
-
-  def files_to_link
-    manifest['link']
-  end
-
-  def manifest
-    @manifest ||= YAML.load(File.read(File.join(MANIFESTS_PATH, manifest_filename)))
-  end
-
-  def manifest_filename
-    'oh-my-zsh.yml'
-  end
-
-  def basename
-    File.basename(__FILE__, File.extname(__FILE__))
   end
 
   def enable
