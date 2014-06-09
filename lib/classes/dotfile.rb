@@ -30,15 +30,47 @@ class Dotfile
 
   def link_files
     manifest['link'].each do |filename|
-      create_parent_directories_if_missing(target_path(filename))
+      prepare_nest(filename) if nested_file?(filename)
       create_symlink(filename)
     end
   end
 
-  def create_parent_directories_if_missing(filename)
-    if filename =~ /\//
-      FileUtils.mkdir_p File.dirname(filename)
+  def nested_file?(filename)
+    filename =~ /\//
+  end
+
+  def prepare_nest(filename)
+    clear_obstructing_directories(filename) if parent_directories_obstructed?(filename)
+    create_parent_directories(filename) unless File.directory?(File.dirname(target_path filename))
+  end
+
+  def clear_obstructing_directories(filename)
+    ConsoleNotifier.print("Preparing to create directory: #{File.dirname target_path(filename)}")
+    for_obstructions_in_target_path(filename) { |t| remove_existing_target t }
+  end
+
+  def parent_directories_obstructed?(filename)
+    obstructed = false
+    for_obstructions_in_target_path(filename) { obstructed = true }
+    obstructed
+  end
+
+  def for_obstructions_in_target_path(filename)
+    target = filename.dup
+    while target != ''
+      if File.exist?(target_path target) && !File.directory?(target_path target)
+        yield target
+      end
+      if target =~ /\//
+        target.gsub!(/\/[^\/]*$/, '')
+      else
+        target = ''
+      end
     end
+  end
+
+  def create_parent_directories(filename)
+    FileUtils.mkdir_p File.dirname(target_path filename)
   end
 
   def copy_files
@@ -70,20 +102,23 @@ class Dotfile
   end
 
   def create_symlink(filename)
+    ConsoleNotifier.print "Creating symlink: #{target_path filename} --> #{source_path filename}"
     File.symlink source_path(filename), target_path(filename)
   end
 
   def remove_existing_target(filename)
-    case File.ftype(target_path(filename))
-      when 'file'
-        File.delete target_path(filename)
-      when 'directory'
-        FileUtils.rm_r target_path(filename)
-      when 'link'
-        File.unlink target_path(filename)
-      else
-        raise NotImplementedError,
-          "Cannot remove file of type '#{File.ftype(target_path(filename))}'"
+    if ask "Remove #{target_path(filename)}?"
+      case File.ftype(target_path(filename))
+        when 'file'
+          File.delete target_path(filename)
+        when 'directory'
+          FileUtils.rm_r target_path(filename)
+        when 'link'
+          File.unlink target_path(filename)
+        else
+          raise NotImplementedError,
+            "Cannot remove file of type '#{File.ftype(target_path(filename))}'"
+      end
     end
   end
 end

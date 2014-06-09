@@ -6,6 +6,10 @@ class ConsoleNotifier
     n.banner(text)
   end
 
+  def self.print(text)
+    $stdout.puts text
+  end
+
   def banner(text, width = 60)
     $stdout.puts "\n" + '#' * width
     banner_lines(text, width).each do |line|
