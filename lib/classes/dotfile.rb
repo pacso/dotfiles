@@ -2,7 +2,11 @@ class Dotfile
   include Decideable
 
   def manifest
-    @manifest ||= YAML.load(File.read(File.join(MANIFESTS_PATH, manifest_filename)))
+    @manifest ||= YAML.load(File.read(manifest_file)) if File.exist?(manifest_file)
+  end
+
+  def manifest_file
+    File.join(MANIFESTS_PATH, manifest_filename)
   end
 
   def manifest_filename
@@ -24,8 +28,10 @@ class Dotfile
   end
 
   def process_manifest
-    link_files
-    copy_files
+    if manifest
+      link_files
+      copy_files
+    end
   end
 
   def link_files

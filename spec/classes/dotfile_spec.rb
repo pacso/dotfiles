@@ -10,14 +10,26 @@ describe Dotfile do
   before(:each) { dotfile.stub(:ask).and_return(true) }
 
   describe '#process_manifest' do
-    it 'calls #link_files' do
-      expect(dotfile).to receive(:link_files)
-      dotfile.process_manifest
+    context 'no manifest exists' do
+      before(:each) { dotfile.stub(:manifest_filename).and_return('unknown.yml') }
+
+      it 'does nothing' do
+        expect(dotfile).not_to receive(:link_files)
+        expect(dotfile).not_to receive(:copy_files)
+        dotfile.process_manifest
+      end
     end
 
-    it 'calls #copy_files' do
-      expect(dotfile).to receive(:copy_files)
-      dotfile.process_manifest
+    context 'manifest exists' do
+      it 'calls #link_files' do
+        expect(dotfile).to receive(:link_files)
+        dotfile.process_manifest
+      end
+
+      it 'calls #copy_files' do
+        expect(dotfile).to receive(:copy_files)
+        dotfile.process_manifest
+      end
     end
   end
 
