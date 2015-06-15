@@ -37,7 +37,7 @@ describe Homebrew do
       end
 
       it 'calls the installer' do
-        expect_any_instance_of(Object).to receive(:system).once.with(%q{ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"})
+        expect_any_instance_of(Object).to receive(:system).once.with(%q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"})
         homebrew.run_installer
       end
     end

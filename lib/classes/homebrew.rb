@@ -1,7 +1,7 @@
 class Homebrew
   include Decideable
 
-  HOMEBREW_INSTALL_COMMAND = %q{ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"}
+  HOMEBREW_INSTALL_COMMAND = %q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
   HOMEBREW_DOCTOR_COMMAND = %q{brew doctor}
 
   def self.install
