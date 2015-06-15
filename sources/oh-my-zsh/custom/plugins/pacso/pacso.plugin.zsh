@@ -11,7 +11,6 @@ unsetopt correct_all
 
 # Some useful aliases
 alias r='rails'
-alias z='zeus'
 
 # add plugin's bin directory to path
 export PATH="$(dirname $0)/bin:$PATH"
