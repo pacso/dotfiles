@@ -51,7 +51,7 @@ describe Homebrew do
 
     describe '#not_installed?' do
       it 'returns true' do
-        expect(homebrew.not_installed?).to be_true
+        expect(homebrew.not_installed?).to be true
       end
     end
   end
@@ -81,7 +81,7 @@ describe Homebrew do
 
     describe '#not_installed?' do
       it 'returns false' do
-        expect(homebrew.not_installed?).to be_false
+        expect(homebrew.not_installed?).to be false
       end
     end
   end

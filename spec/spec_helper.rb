@@ -15,9 +15,12 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:each) do
-    $stdout.stub(:print)
-    $stdout.stub(:puts)
-    Object.any_instance.stub(:system).and_return(true)
+    allow($stdout).to receive(:print)
+    # $stdout.stub(:print)
+    allow($stdout).to receive(:print)
+    # $stdout.stub(:puts)
+    allow_any_instance_of(Object).to receive(:system).and_return(true)
+    # Object.any_instance.stub(:system).and_return(true)
 
     Dir.mkdir SPEC_TMP_DIR
     FileUtils.copy_entry FIXTURE_SOURCE_PATH, SOURCE_BASE_PATH

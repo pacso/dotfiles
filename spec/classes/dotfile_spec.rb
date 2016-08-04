@@ -7,7 +7,10 @@ describe Dotfile do
 
   let(:dotfile) { Dotfile.new }
 
-  before(:each) { dotfile.stub(:ask).and_return(true) }
+  before(:each) {
+    allow(dotfile).to receive(:ask).and_return(true)
+    # dotfile.stub(:ask).and_return(true)
+  }
 
   describe '#process_manifest' do
     context 'no manifest exists' do
@@ -35,11 +38,11 @@ describe Dotfile do
 
   describe '#nested_file?(filename)' do
     it 'returns true if filename contains a slash' do
-      expect(dotfile.nested_file?('some/file/with/path')).to be_true
+      expect(dotfile.nested_file?('some/file/with/path')).to be_truthy
     end
 
     it 'returns false if filename contains no slash' do
-      expect(dotfile.nested_file?('somefile')).to be_false
+      expect(dotfile.nested_file?('somefile')).to be_falsey
     end
   end
 
@@ -54,23 +57,23 @@ describe Dotfile do
 
   describe '#parent_directories_obstructed?(filename)' do
     it 'returns false full directory path exists' do
-      expect(dotfile.parent_directories_obstructed?('existing_directory/existing_subdirectory/invented_filename')).to be_false
+      expect(dotfile.parent_directories_obstructed?('existing_directory/existing_subdirectory/invented_filename')).to be false
     end
 
     it 'returns false if none of the path exists' do
-      expect(dotfile.parent_directories_obstructed?('completely/made/up/path')).to be_false
+      expect(dotfile.parent_directories_obstructed?('completely/made/up/path')).to be false
     end
 
     it 'returns false if some of the path exists' do
-      expect(dotfile.parent_directories_obstructed?('existing_directory/invented_filename')).to be_false
+      expect(dotfile.parent_directories_obstructed?('existing_directory/invented_filename')).to be false
     end
 
     it 'returns true if path contains a file' do
-      expect(dotfile.parent_directories_obstructed?('existing_directory/subdirectory_file/invented_filename')).to be_true
+      expect(dotfile.parent_directories_obstructed?('existing_directory/subdirectory_file/invented_filename')).to be true
     end
 
     it 'returns true if path contains a symlink' do
-      expect(dotfile.parent_directories_obstructed?('existing_symlink/invented_filename')).to be_true
+      expect(dotfile.parent_directories_obstructed?('existing_symlink/invented_filename')).to be true
     end
   end
 
@@ -83,16 +86,16 @@ describe Dotfile do
   describe '#link_files' do
     it 'creates parent directories and then links those files listed in the manifest' do
       dotfile.link_files
-      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir'))).to be_true
-      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir'))).to be_true
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir'))).to be true
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir'))).to be true
 
-      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be_true
-      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be_true
+      expect(File.directory?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be true
+      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir'))).to be true
 
-      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be_true
-      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be_true
+      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be true
+      expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be true
 
-      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir', 'file'))).to be_true
+      expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir', 'file'))).to be true
     end
   end
 
@@ -126,31 +129,31 @@ describe Dotfile do
 
   describe '#source_exists?(filename)' do
     it 'returns true when file exists' do
-      expect(dotfile.source_exists?('new_file')).to be_true
+      expect(dotfile.source_exists?('new_file')).to be true
     end
 
     it 'returns false when file missing' do
-      expect(dotfile.source_exists?('missing')).to be_false
+      expect(dotfile.source_exists?('missing')).to be false
     end
   end
 
   describe '#target_exists?(filename)' do
     it 'returns true when file exists' do
-      expect(dotfile.target_exists?('existing_file')).to be_true
+      expect(dotfile.target_exists?('existing_file')).to be true
     end
 
     it 'returns false when missing' do
-      expect(dotfile.target_exists?('non-existent_filename')).to be_false
+      expect(dotfile.target_exists?('non-existent_filename')).to be false
     end
   end
 
   describe '#target_identical?(filename)' do
     it 'returns true when target links to source' do
-      expect(dotfile.target_identical?('existing_symlink')).to be_true
+      expect(dotfile.target_identical?('existing_symlink')).to be true
     end
 
     it 'returns false if files are equal but not linked' do
-      expect(dotfile.target_identical?('existing_file')).to be_false
+      expect(dotfile.target_identical?('existing_file')).to be false
     end
   end
 
@@ -178,9 +181,8 @@ describe Dotfile do
     end
 
     it 'force deletes files without write permission?' do
-      pending 'need to decide if this is required' do
-        expect { dotfile.remove_existing_target('existing_file_without_write_permissions') }.to change { dotfile.target_exists?('existing_file_without_write_permissions') }.from(true).to(false)
-      end
+      pending 'need to decide if this is required'
+      expect { dotfile.remove_existing_target('existing_file_without_write_permissions') }.to change { dotfile.target_exists?('existing_file_without_write_permissions') }.from(true).to(false)
     end
 
     it 'raises exception if destination file does not exist' do

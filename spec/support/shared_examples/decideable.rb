@@ -30,7 +30,7 @@ shared_examples_for 'a decideable object' do
       end
 
       it 'returns true if response is y' do
-        expect(subject.ask question).to be_true
+        expect(subject.ask question).to be true
       end
     end
 
@@ -38,7 +38,7 @@ shared_examples_for 'a decideable object' do
       let(:response) { "n\r\n" }
 
       it 'returns false if response is n' do
-        expect(subject.ask question).to be_false
+        expect(subject.ask question).to be false
       end
     end
 
@@ -47,9 +47,9 @@ shared_examples_for 'a decideable object' do
 
       it 'should automatically return true for subsequent questions' do
         $stdout.should_receive(:print).once.with(question_output)
-        expect(subject.ask question).to be_true
-        expect(subject.ask 'Another question?').to be_true
-        expect(subject.ask 'A third question?').to be_true
+        expect(subject.ask question).to be true
+        expect(subject.ask 'Another question?').to be true
+        expect(subject.ask 'A third question?').to be true
       end
    end
 
