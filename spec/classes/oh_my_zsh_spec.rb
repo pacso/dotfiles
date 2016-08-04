@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe OhMyZsh do
   before(:each) {
-    File.stub(:exist?) { oh_my_zsh_installed? }
-    OhMyZsh.any_instance.stub(:zsh_enabled?) { zsh_enabled? }
-    Dir.stub(:chdir).and_yield
+    allow(File).to receive(:exist?) { oh_my_zsh_installed? }
+    allow_any_instance_of(OhMyZsh).to receive(:zsh_enabled?) { zsh_enabled? }
+    allow(Dir).to receive(:chdir).and_yield
   }
 
   let(:ohMyZsh) { OhMyZsh.new }

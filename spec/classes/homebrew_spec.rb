@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Homebrew do
   before(:each) {
-    File.stub(:exist?) { homebrew_installed? }
+    allow(File).to receive(:exist?) { homebrew_installed? }
   }
 
   it_should_behave_like 'a decideable object' do
@@ -27,7 +27,7 @@ describe Homebrew do
   end
 
   context 'not installed' do
-    before(:each) { Homebrew.any_instance.stub(:ask) { true } }
+    before(:each) { allow_any_instance_of(Homebrew).to receive(:ask) { true } }
 
     describe '#install' do
       it 'outputs an installation banner' do
@@ -58,7 +58,7 @@ describe Homebrew do
 
   context 'with homebrew already installed' do
     let(:homebrew_installed?) { true }
-    before(:each) { Homebrew.any_instance.stub(:ask) { true } }
+    before(:each) { allow_any_instance_of(Homebrew).to receive(:ask) { true } }
 
     describe '#install' do
       it 'does not output a banner' do

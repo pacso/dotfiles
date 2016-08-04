@@ -14,7 +14,7 @@ describe Dotfile do
 
   describe '#process_manifest' do
     context 'no manifest exists' do
-      before(:each) { dotfile.stub(:manifest_filename).and_return('unknown.yml') }
+      before(:each) { allow(dotfile).to receive(:manifest_filename).and_return('unknown.yml') }
 
       it 'does nothing' do
         expect(dotfile).not_to receive(:link_files)

@@ -15,7 +15,9 @@ describe Rvm do
   end
 
   describe '#install' do
-    before(:each) { rvm.stub(:ask).and_return(true) }
+    before(:each) {
+      allow(rvm).to receive(:ask).and_return(true)
+    }
 
     it 'asks permission before proceeding' do
       expect(rvm).to receive(:ask).ordered

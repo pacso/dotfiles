@@ -11,17 +11,17 @@ describe ConsoleNotifier do
 
   describe '#banner' do
     it 'should wrap the banner text in hashes' do
-      $stdout.should_receive(:puts).with("\n#{'#' * 60}").ordered
-      $stdout.should_receive(:puts).with(banner_output).ordered
-      $stdout.should_receive(:puts).with("#{'#' * 60}\n\n").ordered
+      expect($stdout).to receive(:puts).with("\n#{'#' * 60}").ordered
+      expect($stdout).to receive(:puts).with(banner_output).ordered
+      expect($stdout).to receive(:puts).with("#{'#' * 60}\n\n").ordered
       subject.banner(banner_input)
     end
 
     it 'should wrap lines longer than 76 characters' do
-      $stdout.should_receive(:puts).with("\n#{'#' * 60}").ordered
-      $stdout.should_receive(:puts).with(long_banner_output_line_1).ordered
-      $stdout.should_receive(:puts).with(long_banner_output_line_2).ordered
-      $stdout.should_receive(:puts).with("#{'#' * 60}\n\n").ordered
+      expect($stdout).to receive(:puts).with("\n#{'#' * 60}").ordered
+      expect($stdout).to receive(:puts).with(long_banner_output_line_1).ordered
+      expect($stdout).to receive(:puts).with(long_banner_output_line_2).ordered
+      expect($stdout).to receive(:puts).with("#{'#' * 60}\n\n").ordered
       subject.banner(long_banner_input)
     end
   end

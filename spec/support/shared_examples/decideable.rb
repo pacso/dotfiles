@@ -14,7 +14,7 @@ shared_examples_for 'a decideable object' do
   it { should respond_to(:ask) }
 
   describe '#ask' do
-    before(:each) { $stdin.stub(:gets) { response } }
+    before(:each) { allow($stdin).to receive(:gets) { response } }
 
     context 'positive response' do
       let(:response) { "y\r\n" }
@@ -55,7 +55,7 @@ shared_examples_for 'a decideable object' do
 
     context 'invalid responses' do
       before(:each) do
-        $stdin.stub(:gets).and_return("x\r\n", "g\r\n", "y\r\n")
+        allow($stdin).to receive(:gets).and_return("x\r\n", "g\r\n", "y\r\n")
       end
 
       it 'repeats the question until a valid response is provided' do
