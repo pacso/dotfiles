@@ -163,7 +163,7 @@ describe Dotfile do
     end
 
     it 'raises exception if destination file already exists' do
-      expect { dotfile.create_symlink('existing_symlink') }.to raise_exception
+      expect { dotfile.create_symlink('existing_symlink') }.to raise_error(Errno::EEXIST)
     end
   end
 
@@ -186,7 +186,7 @@ describe Dotfile do
     end
 
     it 'raises exception if destination file does not exist' do
-      expect { dotfile.remove_existing_target('new_file') }.to raise_exception
+      expect { dotfile.remove_existing_target('new_file') }.to raise_error(Errno::ENOENT)
     end
   end
 end

@@ -20,12 +20,12 @@ shared_examples_for 'a decideable object' do
       let(:response) { "y\r\n" }
 
       it 'outputs the question' do
-        $stdout.should_receive(:print).with(question_output)
+        expect($stdout).to receive(:print).with(question_output)
         subject.ask question
       end
 
       it 'prompts for the answer' do
-        $stdin.should_receive(:gets)
+        expect($stdin).to receive(:gets)
         subject.ask question
       end
 
@@ -46,7 +46,7 @@ shared_examples_for 'a decideable object' do
       let(:response) { "a\r\n" }
 
       it 'should automatically return true for subsequent questions' do
-        $stdout.should_receive(:print).once.with(question_output)
+        expect($stdout).to receive(:print).once.with(question_output)
         expect(subject.ask question).to be true
         expect(subject.ask 'Another question?').to be true
         expect(subject.ask 'A third question?').to be true
@@ -59,7 +59,7 @@ shared_examples_for 'a decideable object' do
       end
 
       it 'repeats the question until a valid response is provided' do
-        $stdout.should_receive(:print).exactly(3).times.with(question_output)
+        expect($stdout).to receive(:print).exactly(3).times.with(question_output)
         subject.ask question
       end
     end
@@ -68,7 +68,7 @@ shared_examples_for 'a decideable object' do
       let(:response) { "q\r\n" }
 
       it 'terminates execution' do
-        expect { subject.ask question }.to raise_exception SystemExit
+        expect { subject.ask question }.to raise_error(SystemExit)
       end
     end
   end

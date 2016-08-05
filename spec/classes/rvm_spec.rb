@@ -27,7 +27,7 @@ describe Rvm do
     end
 
     it 'does not proceed if permission refused' do
-      rvm.stub(:ask).and_return(false)
+      allow(rvm).to receive(:ask).and_return(false)
       expect(rvm).to receive(:ask).ordered
       expect(ConsoleNotifier).not_to receive(:banner)
       expect(rvm).not_to receive(:system)
