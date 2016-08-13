@@ -36,5 +36,3 @@ namespace :update do
   desc 'Update oh-my-zsh'
   task 'oh-my-zsh' => [:'oh-my-zsh:update']
 end
-
-
