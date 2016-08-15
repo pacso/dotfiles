@@ -8,7 +8,8 @@ SOURCE_BASE_PATH    = File.join(File.dirname(__FILE__), 'tmp', 'sources')
 TARGET_BASE_PATH    = File.join(File.dirname(__FILE__), 'tmp', 'target')
 MANIFESTS_PATH      = File.join(File.dirname(__FILE__), 'fixture', 'manifests')
 
-require File.join(File.dirname(File.dirname(__FILE__)), 'lib', 'config', 'init')
+puts "Require init in spec_helper"
+# require File.join(File.dirname(File.dirname(__FILE__)), 'lib', 'config', 'init')
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
