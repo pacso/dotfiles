@@ -28,6 +28,8 @@ class OhMyZsh < Dotfile
       system GITHUB_CLONE_COMMAND
       process_manifest
     end
+
+    create_code_directory_if_required
   end
 
   def enable
@@ -38,6 +40,8 @@ class OhMyZsh < Dotfile
         ConsoleNotifier.banner 'Setting default shell to Zsh ...'
         system ENABLE_ZSH_COMMAND
       end
+
+      create_code_directory_if_required
     else
       ConsoleNotifier.banner 'Cannot enable OhMyZsh ... install it first'
     end
@@ -66,6 +70,18 @@ class OhMyZsh < Dotfile
   end
 
   private
+
+  def create_code_directory_if_required
+    Dir.mkdir code_directory unless code_directory_exists?
+  end
+
+  def code_directory_exists?
+    File.exist?(code_directory)
+  end
+
+  def code_directory
+    File.join(ENV['HOME'], 'code')
+  end
 
   def already_installed?
     File.exist?(install_directory)

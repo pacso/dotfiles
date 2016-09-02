@@ -9,7 +9,6 @@ TARGET_BASE_PATH    = File.join(File.dirname(__FILE__), 'tmp', 'target')
 MANIFESTS_PATH      = File.join(File.dirname(__FILE__), 'fixture', 'manifests')
 
 unless defined? Dotfile
-  puts 'Require init file in spec_helper'
   require File.join(File.dirname(File.dirname(__FILE__)), 'lib', 'config', 'init')
 end
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each {|f| require f}
