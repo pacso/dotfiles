@@ -61,6 +61,12 @@ describe OhMyZsh do
           expect(ConsoleNotifier).to receive(:banner).with "Creating missing directory: #{SPEC_TMP_DIR}/code"
           ohMyZsh.install
         end
+
+        it 'creates the code directory' do
+          expect(Dir.exists? File.join(SPEC_TMP_DIR, 'code')).to be false
+          ohMyZsh.install
+          expect(Dir.exists? File.join(SPEC_TMP_DIR, 'code')).to be true
+        end
       end
     end
 
