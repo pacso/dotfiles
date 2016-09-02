@@ -73,13 +73,13 @@ class OhMyZsh < Dotfile
 
   def create_code_directory_if_required
     unless code_directory_exists?
-      ConsoleNotifier.banner 'Creating missing ~/code/ directory ...'
+      ConsoleNotifier.banner "Creating missing directory: #{ENV['HOME']}/code"
       Dir.mkdir code_directory
     end
   end
 
   def code_directory_exists?
-    File.exist?(code_directory)
+    Dir.exists? code_directory
   end
 
   def code_directory
@@ -87,7 +87,7 @@ class OhMyZsh < Dotfile
   end
 
   def already_installed?
-    File.exist?(install_directory)
+    File.exist? install_directory
   end
 
   def install_directory
