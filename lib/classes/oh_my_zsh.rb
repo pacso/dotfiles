@@ -72,7 +72,10 @@ class OhMyZsh < Dotfile
   private
 
   def create_code_directory_if_required
-    Dir.mkdir code_directory unless code_directory_exists?
+    unless code_directory_exists?
+      ConsoleNotifier.banner 'Creating missing ~/code/ directory ...'
+      Dir.mkdir code_directory
+    end
   end
 
   def code_directory_exists?
