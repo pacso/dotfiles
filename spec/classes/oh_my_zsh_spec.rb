@@ -50,6 +50,24 @@ describe OhMyZsh do
         expect_any_instance_of(Object).to receive(:system).once.with(%q{git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"})
         ohMyZsh.install
       end
+
+      context 'without a code directory' do
+        before(:each) do
+          Dir.rmdir File.join(SPEC_TMP_DIR, 'code')
+        end
+
+        it 'outputs the directory creation banner' do
+          expect(ConsoleNotifier).to receive(:banner).with 'Installing oh-my-zsh'
+          expect(ConsoleNotifier).to receive(:banner).with "Creating missing directory: #{SPEC_TMP_DIR}/code"
+          ohMyZsh.install
+        end
+
+        it 'creates the code directory' do
+          expect(Dir.exists? File.join(SPEC_TMP_DIR, 'code')).to be false
+          ohMyZsh.install
+          expect(Dir.exists? File.join(SPEC_TMP_DIR, 'code')).to be true
+        end
+      end
     end
 
     describe '#enable' do
