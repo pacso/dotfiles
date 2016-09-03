@@ -41,6 +41,11 @@ describe OhMyZsh do
 
   context 'not installed' do
     describe '#install' do
+      it 'asks for permission' do
+        expect($stdout).to receive(:print).with('Install oh-my-zsh? [ynaq]: ')
+        ohMyZsh.install
+      end
+
       it 'outputs an installation banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Installing oh-my-zsh'
         ohMyZsh.install
@@ -54,6 +59,12 @@ describe OhMyZsh do
       context 'without a code directory' do
         before(:each) do
           Dir.rmdir File.join(SPEC_TMP_DIR, 'code')
+        end
+
+        it 'asks for permission to create the code directory' do
+          expect($stdout).to receive(:print).with('Install oh-my-zsh? [ynaq]: ')
+          expect($stdout).to receive(:print).with("Create #{File.join(SPEC_TMP_DIR, 'code')} directory? [ynaq]: ")
+          ohMyZsh.install
         end
 
         it 'outputs the directory creation banner' do
@@ -71,6 +82,11 @@ describe OhMyZsh do
     end
 
     describe '#enable' do
+      it 'does not ask for permission' do
+        expect($stdout).not_to receive(:print)
+        ohMyZsh.enable
+      end
+
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Cannot enable OhMyZsh ... install it first'
         ohMyZsh.enable
@@ -83,6 +99,11 @@ describe OhMyZsh do
     end
 
     describe '#update' do
+      it 'does not ask for permission' do
+        expect($stdout).not_to receive(:print)
+        ohMyZsh.update
+      end
+
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'OhMyZsh must be installed first'
         ohMyZsh.update
@@ -99,6 +120,11 @@ describe OhMyZsh do
     let(:oh_my_zsh_installed?) { true }
 
     describe '#install' do
+      it 'does not ask for permission' do
+        expect($stdout).not_to receive(:print)
+        ohMyZsh.install
+      end
+
       it 'outputs an already installed banner' do
         expect(ConsoleNotifier).to receive(:banner).with '~/.oh-my-zsh exists ... nothing to install'
         ohMyZsh.install
@@ -111,6 +137,11 @@ describe OhMyZsh do
     end
 
     describe '#enable' do
+      it 'asks for permission to enable Zsh' do
+        expect($stdout).to receive(:print).with('Set default shell to Zsh? [ynaq]: ')
+        ohMyZsh.enable
+      end
+
       it 'outputs an enabling banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Setting default shell to Zsh ...'
         ohMyZsh.enable
@@ -123,6 +154,11 @@ describe OhMyZsh do
     end
 
     describe '#disable' do
+      it 'does not ask for permission' do
+        expect($stdout).not_to receive(:print)
+        ohMyZsh.disable
+      end
+
       it 'outputs a warning banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Zsh is already disabled'
         ohMyZsh.disable
@@ -135,6 +171,11 @@ describe OhMyZsh do
     end
 
     describe '#update' do
+      it 'asks for permission' do
+        expect($stdout).to receive(:print).with('Update oh-my-zsh? [ynaq]: ')
+        ohMyZsh.update
+      end
+
       it 'outputs a notification banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'Updating oh-my-zsh'
         ohMyZsh.update
@@ -155,6 +196,11 @@ describe OhMyZsh do
       let(:zsh_enabled?) { true }
 
       describe '#enable' do
+        it 'asks for permission' do
+          expect($stdout).not_to receive(:print)
+          ohMyZsh.enable
+        end
+
         it 'outputs a warning banner' do
           expect(ConsoleNotifier).to receive(:banner).with 'Zsh is already the default shell'
           ohMyZsh.enable
@@ -167,6 +213,11 @@ describe OhMyZsh do
       end
 
       describe '#disable' do
+        it 'asks for permission' do
+          expect($stdout).to receive(:print).with('Set default shell to Bash? [ynaq]: ')
+          ohMyZsh.disable
+        end
+
         it 'outputs a banner' do
           expect(ConsoleNotifier).to receive(:banner).with 'Setting default shell to Bash ...'
           ohMyZsh.disable

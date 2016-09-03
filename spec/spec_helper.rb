@@ -17,10 +17,12 @@ Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.order = 'random'
+  config.add_setting :agree_to_prompt, default: true
 
   config.before(:each) do
     allow($stdout).to receive(:print)
     allow($stdout).to receive(:print)
+    allow($stdin).to receive(:gets) { RSpec.configuration.agree_to_prompt ? "y\r\n" : "n\r\n" }
     allow_any_instance_of(Object).to receive(:system).and_return(true)
 
     FileUtils.mkdir_p File.join(SPEC_TMP_DIR, 'code')

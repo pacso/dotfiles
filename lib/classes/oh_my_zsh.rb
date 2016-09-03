@@ -23,7 +23,7 @@ class OhMyZsh < Dotfile
   def install
     if already_installed?
       ConsoleNotifier.banner '~/.oh-my-zsh exists ... nothing to install'
-    else
+    elsif ask 'Install oh-my-zsh?'
       ConsoleNotifier.banner 'Installing oh-my-zsh'
       system GITHUB_CLONE_COMMAND
       process_manifest
@@ -37,8 +37,10 @@ class OhMyZsh < Dotfile
       if zsh_enabled?
         ConsoleNotifier.banner 'Zsh is already the default shell'
       else
-        ConsoleNotifier.banner 'Setting default shell to Zsh ...'
-        system ENABLE_ZSH_COMMAND
+        if ask 'Set default shell to Zsh?'
+          ConsoleNotifier.banner 'Setting default shell to Zsh ...'
+          system ENABLE_ZSH_COMMAND
+        end
       end
 
       create_code_directory_if_required
@@ -49,15 +51,17 @@ class OhMyZsh < Dotfile
 
   def disable
     if zsh_enabled?
-      ConsoleNotifier.banner 'Setting default shell to Bash ...'
-      system DISABLE_ZSH_COMMAND
+      if ask 'Set default shell to Bash?'
+        ConsoleNotifier.banner 'Setting default shell to Bash ...'
+        system DISABLE_ZSH_COMMAND
+      end
     else
       ConsoleNotifier.banner 'Zsh is already disabled'
     end
   end
 
   def update
-    if already_installed?
+    if already_installed? and ask 'Update oh-my-zsh?'
       ConsoleNotifier.banner 'Updating oh-my-zsh'
       Dir.chdir(install_directory) { system GITHUB_PULL_COMMAND }
     else
@@ -73,8 +77,10 @@ class OhMyZsh < Dotfile
 
   def create_code_directory_if_required
     unless code_directory_exists?
-      ConsoleNotifier.banner "Creating missing directory: #{ENV['HOME']}/code"
-      Dir.mkdir code_directory
+      if ask "Create #{ENV['HOME']}/code directory?"
+        ConsoleNotifier.banner "Creating missing directory: #{ENV['HOME']}/code"
+        Dir.mkdir code_directory
+      end
     end
   end
 
