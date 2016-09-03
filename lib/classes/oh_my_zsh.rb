@@ -36,11 +36,9 @@ class OhMyZsh < Dotfile
     if already_installed?
       if zsh_enabled?
         ConsoleNotifier.banner 'Zsh is already the default shell'
-      else
-        if ask 'Set default shell to Zsh?'
-          ConsoleNotifier.banner 'Setting default shell to Zsh ...'
-          system ENABLE_ZSH_COMMAND
-        end
+      elsif ask 'Set default shell to Zsh?'
+        ConsoleNotifier.banner 'Setting default shell to Zsh ...'
+        system ENABLE_ZSH_COMMAND
       end
 
       create_code_directory_if_required
