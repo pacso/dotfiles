@@ -7,7 +7,7 @@ begin
 rescue LoadError; end
 
 desc 'Install everything'
-task install: [:'oh-my-zsh:install']
+task install: [:'oh-my-zsh:install', :'homebrew:install', :'rvm:install']
 
 namespace :install do
   desc 'Install oh-my-zsh'
