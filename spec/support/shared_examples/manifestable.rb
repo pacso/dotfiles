@@ -20,7 +20,7 @@ shared_examples_for 'a manifestable object' do
     before(:each) { allow(subject).to receive(:manifest_filename).and_return('dotfile.yml') }
 
     it 'returns a parsed hash of the manifest' do
-      expect(subject.manifest).to eq( 'link' => %w(basedir/subdir/linkdir basedir/subdir/linkfile))
+      expect(subject.manifest).to eq( 'links' => %w(basedir/subdir/linkdir basedir/subdir/linkfile))
     end
   end
 

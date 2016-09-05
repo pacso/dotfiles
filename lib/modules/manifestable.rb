@@ -7,17 +7,17 @@ module Manifestable
 
   def process_manifest
     if manifest
-      link_files if manifest_provides_links?
-      install_packages
+      link_files if manifest_provides?('links')
+      install_packages if manifest_provides?('packages')
     end
   end
 
-  def manifest_provides_links?
-    manifest.key?('link') && !manifest['link'].nil?
+  def manifest_provides?(key)
+    manifest.key?(key) && !manifest[key].nil?
   end
 
   def link_files
-    manifest['link'].each do |filename|
+    manifest['links'].each do |filename|
       prepare_nest(filename) if nested_file?(filename)
       create_symlink(filename)
     end

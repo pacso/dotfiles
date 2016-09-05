@@ -1,4 +1,4 @@
 --- # Manifest with only links
-link:
+links:
   - basedir/subdir/linkdir
   - basedir/subdir/linkfile
