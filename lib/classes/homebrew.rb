@@ -46,7 +46,11 @@ class Homebrew
     system "brew install #{pkg}" if ask "brew install #{pkg}?"
   end
 
-  def package_installed?(pkg)
-    return false
+  def package_installed?(package)
+    !installed_versions(package).empty?
+  end
+
+  def installed_versions(package)
+    `brew ls --versions #{package}`
   end
 end

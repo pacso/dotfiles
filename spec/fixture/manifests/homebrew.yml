@@ -1,2 +1,4 @@
 --- # Homebrew Install Manifest
-links:
+packages:
+  - pkg1
+  - pkg2

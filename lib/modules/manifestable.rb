@@ -23,6 +23,20 @@ module Manifestable
     end
   end
 
+  def install_missing_packages
+    manifest['packages'].each do |package|
+      install_package(package) unless package_installed?(package)
+    end
+  end
+
+  def package_installed?(package)
+    true
+  end
+
+  def install_package(package)
+    raise NotImplementedError, "Including class does not implement #install_package"
+  end
+
   def nested_file?(filename)
     filename =~ /\//
   end
@@ -104,10 +118,6 @@ module Manifestable
                 "Cannot remove file of type '#{File.ftype(target_path(filename))}'"
       end
     end
-  end
-
-  def install_missing_packages
-    true
   end
 
   def manifest

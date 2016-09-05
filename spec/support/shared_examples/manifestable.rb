@@ -63,11 +63,29 @@ shared_examples_for 'a manifestable object' do
         end
       end
 
+      context 'with empty packages' do
+        before(:each) { allow(subject).to receive(:manifest_filename).and_return('empty.yml') }
+
+        it 'does not call #install_missing_packages' do
+          expect(subject).not_to receive(:install_missing_packages)
+          subject.process_manifest
+        end
+      end
+
       context 'without links' do
         before(:each) { allow(subject).to receive(:manifest_filename).and_return('packages.yml') }
 
         it 'does not call #link_files' do
           expect(subject).not_to receive(:link_files)
+          subject.process_manifest
+        end
+      end
+
+      context 'without packages' do
+        before(:each) { allow(subject).to receive(:manifest_filename).and_return('links.yml') }
+
+        it 'does not call #install_missing_packages' do
+          expect(subject).not_to receive(:install_missing_packages)
           subject.process_manifest
         end
       end
@@ -134,6 +152,12 @@ shared_examples_for 'a manifestable object' do
       expect(File.symlink?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkfile'))).to be true
 
       expect(File.file?(File.join(TARGET_BASE_PATH, '.basedir', 'subdir', 'linkdir', 'file'))).to be true
+    end
+  end
+
+  describe '#install_missing_packages' do
+    it 'should be provided by the including class' do
+      expect(subject).to respond_to(:install_missing_packages)
     end
   end
 

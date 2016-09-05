@@ -36,8 +36,10 @@ describe Homebrew do
         homebrew.run_installer
       end
 
-      it 'calls the installer' do
-        expect_any_instance_of(Object).to receive(:system).once.with(%q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"})
+      it 'calls the installer and then installs the manifest packages' do
+        expect(homebrew).to receive(:system).once.ordered.with(%q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"})
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg1')
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg2')
         homebrew.run_installer
       end
     end
@@ -66,8 +68,9 @@ describe Homebrew do
         homebrew.run_installer
       end
 
-      it 'does not call the installer' do
-        expect_any_instance_of(Object).not_to receive(:system)
+      it 'does not call the installer but installs any missine packages' do
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg1')
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg2')
         homebrew.run_installer
       end
     end
