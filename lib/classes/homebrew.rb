@@ -1,5 +1,5 @@
 class Homebrew
-  include Decideable
+  include Manifestable
 
   HOMEBREW_INSTALL_COMMAND = %q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
   HOMEBREW_DOCTOR_COMMAND = %q{brew doctor}
@@ -22,6 +22,14 @@ class Homebrew
         system HOMEBREW_INSTALL_COMMAND
       end
     end
+
+    process_manifest
+  end
+
+  def install_default_packages
+    DEFAULT_PACKAGES.each do |pkg|
+      install_package pkg unless package_installed? pkg
+    end
   end
 
   def run_doctor
@@ -30,5 +38,15 @@ class Homebrew
 
   def not_installed?
     !File.exist?('/usr/local/bin/brew')
+  end
+
+  private
+
+  def install_package(pkg)
+    system "brew install #{pkg}" if ask "brew install #{pkg}?"
+  end
+
+  def package_installed?(pkg)
+    return false
   end
 end

@@ -5,8 +5,8 @@ describe Homebrew do
     allow(File).to receive(:exist?) { homebrew_installed? }
   }
 
-  it_should_behave_like 'a decideable object' do
-    let(:decideable) { Homebrew.new }
+  it_should_behave_like 'a manifestable object' do
+    let(:manifestable) { Homebrew.new }
   end
 
   let(:homebrew) { Homebrew.new }

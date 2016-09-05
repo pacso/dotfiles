@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe OhMyZsh do
+  it_should_behave_like 'a manifestable object' do
+    let(:manifestable) { OhMyZsh.new }
+  end
+
   before(:each) {
     allow(File).to receive(:exist?) { oh_my_zsh_installed? }
     allow_any_instance_of(OhMyZsh).to receive(:zsh_enabled?) { zsh_enabled? }

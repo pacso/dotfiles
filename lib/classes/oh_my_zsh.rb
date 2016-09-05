@@ -1,4 +1,6 @@
-class OhMyZsh < Dotfile
+class OhMyZsh
+  include Manifestable
+
   GITHUB_CLONE_COMMAND = %Q{git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"}
   ENABLE_ZSH_COMMAND = %Q{chsh -s `which zsh`}
   DISABLE_ZSH_COMMAND = %Q{chsh -s `which bash`}

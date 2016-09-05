@@ -1,37 +1,19 @@
-class Dotfile
-  include Decideable
-
-  def manifest
-    @manifest ||= YAML.load(File.read(manifest_file)) if File.exist?(manifest_file)
-  end
-
-  def manifest_file
-    File.join(MANIFESTS_PATH, manifest_filename)
-  end
-
-  def manifest_filename
-    "#{basename}.yml"
-  end
-
-  def basename
-    underscore(self.class.name)
-  end
-
-  def underscore(word)
-    w = word.dup
-    w.gsub!(/::/, '/')
-    w.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
-    w.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-    w.tr!("-", "_")
-    w.downcase!
-    w
+module Manifestable
+  def self.included klass
+    klass.class_eval do
+      include Decideable
+    end
   end
 
   def process_manifest
     if manifest
-      link_files
-      copy_files
+      link_files if manifest_provides_links?
+      install_packages
     end
+  end
+
+  def manifest_provides_links?
+    manifest.key?('link') && !manifest['link'].nil?
   end
 
   def link_files
@@ -79,10 +61,6 @@ class Dotfile
     FileUtils.mkdir_p File.dirname(target_path filename)
   end
 
-  def copy_files
-    true
-  end
-
   def source_exists?(filename)
     filename != '' && File.exist?(source_path filename)
   end
@@ -123,8 +101,38 @@ class Dotfile
           File.unlink target_path(filename)
         else
           raise NotImplementedError,
-            "Cannot remove file of type '#{File.ftype(target_path(filename))}'"
+                "Cannot remove file of type '#{File.ftype(target_path(filename))}'"
       end
     end
+  end
+
+  def install_packages
+    true
+  end
+
+  def manifest
+    @manifest ||= YAML.load(File.read(manifest_file)) if File.exists?(manifest_file)
+  end
+
+  def manifest_file
+    File.join(MANIFESTS_PATH, manifest_filename)
+  end
+
+  def manifest_filename
+    "#{basename}.yml"
+  end
+
+  def basename
+    underscore(self.class.name)
+  end
+
+  def underscore(word)
+    w = word.dup
+    w.gsub!(/::/, '/')
+    w.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
+    w.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+    w.tr!("-", "_")
+    w.downcase!
+    w
   end
 end

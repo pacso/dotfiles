@@ -1,0 +1,4 @@
+--- # Homebrew Install Manifest
+packages:
+  - direnv
+  - mysql

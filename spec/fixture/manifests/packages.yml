@@ -1,0 +1,4 @@
+--- # Manifest with only packages
+packages:
+  - package_1
+  - package_2
