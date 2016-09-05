@@ -8,7 +8,7 @@ module Manifestable
   def process_manifest
     if manifest
       link_files if manifest_provides?('links')
-      install_packages if manifest_provides?('packages')
+      install_missing_packages if manifest_provides?('packages')
     end
   end
 
@@ -46,7 +46,7 @@ module Manifestable
   def for_obstructions_in_target_path(filename)
     target = filename.dup
     while target != ''
-      if File.exist?(target_path target) && !File.directory?(target_path target)
+      if File.file?(target_path target) || File.symlink?(target_path target)
         yield target
       end
       if target =~ /\//
@@ -62,11 +62,11 @@ module Manifestable
   end
 
   def source_exists?(filename)
-    filename != '' && File.exist?(source_path filename)
+    filename != '' && file_exists?(source_path filename)
   end
 
   def target_exists?(filename)
-    filename != '' && File.exist?(target_path filename)
+    filename != '' && file_exists?(target_path filename)
   end
 
   def target_identical?(filename)
@@ -106,12 +106,16 @@ module Manifestable
     end
   end
 
-  def install_packages
+  def install_missing_packages
     true
   end
 
   def manifest
-    @manifest ||= YAML.load(File.read(manifest_file)) if File.exists?(manifest_file)
+    @manifest ||= YAML.load(File.read(manifest_file)) if file_exists?(manifest_file)
+  end
+
+  def file_exists?(filename)
+    File.exist?(filename) || File.file?(filename) || File.symlink?(filename) || File.directory?(filename)
   end
 
   def manifest_file
@@ -129,8 +133,8 @@ module Manifestable
   def underscore(word)
     w = word.dup
     w.gsub!(/::/, '/')
-    w.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
-    w.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+    w.gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+    w.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
     w.tr!("-", "_")
     w.downcase!
     w
