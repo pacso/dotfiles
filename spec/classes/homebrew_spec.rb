@@ -33,11 +33,13 @@ describe Homebrew do
       it 'outputs an installation banner' do
         expect(ConsoleNotifier).to receive(:banner).with 'To continue you must install Homebrew'
         expect(ConsoleNotifier).to receive(:banner).with 'Installing Homebrew'
+        expect(homebrew).to receive(:`).twice.and_return('')
         homebrew.run_installer
       end
 
       it 'calls the installer and then installs the manifest packages' do
         expect(homebrew).to receive(:system).once.ordered.with(%q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"})
+        expect(homebrew).to receive(:`).twice.and_return('')
         expect(homebrew).to receive(:system).once.ordered.with('brew install pkg1')
         expect(homebrew).to receive(:system).once.ordered.with('brew install pkg2')
         homebrew.run_installer
