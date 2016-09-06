@@ -76,7 +76,7 @@ shared_examples_for 'a manifestable object' do
         before(:each) { allow(subject).to receive(:manifest_filename).and_return('packages.yml') }
 
         it 'does not call #link_files' do
-          allow(subject).to receive(:`) { true }
+          allow(subject).to receive(:`) { '' }
           allow(subject).to receive(:system) { true }
           expect(subject).not_to receive(:link_files)
           subject.process_manifest

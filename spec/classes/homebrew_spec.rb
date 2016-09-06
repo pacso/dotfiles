@@ -67,6 +67,9 @@ describe Homebrew do
     describe '#install' do
       it 'does not output a banner' do
         expect(ConsoleNotifier).not_to receive(:banner)
+        expect(homebrew).to receive(:`).twice.and_return('')
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg1')
+        expect(homebrew).to receive(:system).once.ordered.with('brew install pkg2')
         homebrew.run_installer
       end
 
