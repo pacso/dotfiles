@@ -71,6 +71,7 @@ describe Homebrew do
       end
 
       it 'does not call the installer but installs any missine packages' do
+        expect(homebrew).to receive(:`).twice.and_return('')
         expect(homebrew).to receive(:system).once.ordered.with('brew install pkg1')
         expect(homebrew).to receive(:system).once.ordered.with('brew install pkg2')
         homebrew.run_installer
