@@ -46,6 +46,6 @@ class GitConfig
   end
 
   def update_global_config(setting, value)
-    system("git config --global #{setting} #{value}")
+    system("git config --global #{setting} '#{value}'")
   end
 end
