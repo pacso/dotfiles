@@ -7,7 +7,7 @@ begin
 rescue LoadError; end
 
 desc 'Install everything'
-task install: [:'oh-my-zsh:install', :'homebrew:install', :'rvm:install']
+task install: [:'git:configure', :'oh-my-zsh:install', :'homebrew:install', :'rvm:install']
 
 namespace :install do
   desc 'Install oh-my-zsh'
@@ -18,6 +18,9 @@ namespace :install do
 
   desc 'Install Homebew'
   task homebrew: [:'homebrew:install']
+
+  desc 'Configure Git'
+  task git: [:'git:configure']
 end
 
 desc 'Remove everything'

@@ -10,6 +10,7 @@ GEM
       activesupport (>= 3.0)
     concurrent-ruby (1.0.2)
     diff-lcs (1.2.5)
+    highline (1.7.8)
     i18n (0.7.0)
     minitest (5.9.0)
     rake (11.2.2)
@@ -35,8 +36,9 @@ PLATFORMS
 
 DEPENDENCIES
   climate_control
+  highline
   rake
   rspec
 
 BUNDLED WITH
-   1.12.3
+   1.12.5
