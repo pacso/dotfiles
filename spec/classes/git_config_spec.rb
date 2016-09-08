@@ -17,7 +17,7 @@ describe GitConfig do
       input << "Joe Bloggs\n"
       input.rewind
 
-      expect(git_config).to receive(:system).with("git config --global user.name Joe Bloggs")
+      expect(git_config).to receive(:system).with("git config --global user.name 'Joe Bloggs'")
       git_config.set_name
       expect(output.string).to eq("Name\n")
     end
@@ -28,7 +28,7 @@ describe GitConfig do
       input << "joe.bloggs@email.com\n"
       input.rewind
 
-      expect(git_config).to receive(:system).with("git config --global user.email joe.bloggs@email.com")
+      expect(git_config).to receive(:system).with("git config --global user.email 'joe.bloggs@email.com'")
       git_config.set_email
       expect(output.string).to eq("Email\n")
     end
